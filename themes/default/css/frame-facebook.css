@@ -1,0 +1,109 @@
+/**
+ * @Project NUKEVIET 4.x
+ * @Author Tập Đoàn Họ Nguyễn <adminwmt@gmail.com>
+ * @Copyright (C) 2023 Tập Đoàn Họ Nguyễn. All rights reserved
+ * @License: Not free read more http://nukeviet.vn/vi/store/modules/nvtools/
+ * @Createdate Sat, 24 Jun 2023 13:16:47 GMT
+ */
+
+#wrapper{
+	min-height: 100%;
+  	background-color: #ffffff;
+	text-align: center;
+}
+#main-header {
+	position: relative;
+	margin: 0 0 5px;
+	padding: 5px 0px 5px 0px;
+	background: #4267b2;
+	color: #fff;
+}
+#content{
+display: table;	margin: 0 auto;
+  padding: 0 0 60px;
+  width: 100%;
+  background: #fff;
+  color: #000;
+}
+#preview{
+	position: relative;
+	display: inline-block;
+	height: 350px;
+	width: 350px;
+	background: #fff;
+}
+#profile-pic, #fg{
+	width: 100%;
+}
+#fg{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 10;
+}
+#fb-set-pic{
+  display: table;
+  margin: 20px auto;
+}
+#download{
+  padding: 10px 20px;
+  background: #092e7b;
+  color: #fff;
+  font-size: 1em;
+  border-radius: 10px;
+  outline: none;
+}
+#fb-set-pic{
+  background-color: #4267b2;
+  border-color: #4267b2;
+  color: #fff;
+  font-size: 1em;
+  border-radius: 10px;
+  outline: none;
+  padding: 10px 20px;
+}
+#download[disabled], #fb-set-pic[disabled]{
+  background: #CCC;
+  color: #EEE;
+  border: none;
+}
+a {
+	color: #2980b9;
+	text-decoration: none;
+}
+a:active, a:focus {
+	color: #3498db;
+	text-decoration: none;
+	outline: 0;
+}
+a:visited {
+	color: #2980b9;
+	text-decoration: none;
+}
+a:hover {
+	color: #3498db;
+	text-decoration: underline;
+}
+.design{
+  height: 100px;
+  border: 5px dashed #CCC;
+  cursor: pointer;
+}
+.design.factive{
+  border: 5px dashed #fe0505;
+}
+.clear{ clear:both}
+#comments{
+  margin: 20px;
+}
+@media screen and (max-width: 801px){
+	#content{
+		width: 100%;
+		margin: 0;
+	}
+  #comments{
+    margin: 20px 0;
+  }
+}
