@@ -13,9 +13,9 @@ if (!defined('NV_MAINFILE'))
 
 $module_version = array(
     'name' => 'Frame-facebook',
-    'modfuncs' => 'main,detail,search,upload,download,myframe,file',
+    'modfuncs' => 'main,detail,search,upload,download,myframe,file,config',
     'change_alias' => 'main,detail,search,upload,download,myframe',
-    'submenu' => 'main,detail,search,upload,download,myframe',
+    'submenu' => 'main,detail,search,upload,download,myframe,config',
     'is_sysmod' => 0,
     'virtual' => 1,
     'version' => '4.3.03',

@@ -201,5 +201,76 @@ $(document).ready(function(){
 			  console.log("File Size: " + file.size + " bytes");
 			});
 	}
+	var fileInput0 = document.getElementById('file-input0');
+	if(fileInput0 != null){
+		fileInput0.addEventListener("change", function(event) {
+			var file = event.target.files[0]; // Lấy tệp tin từ sự kiện onchange
 
+			var reader = new FileReader();
+
+			// Xử lý khi đọc tệp tin hoàn tất
+			reader.onload = function(e) {
+				var imageData = e.target.result; // Dữ liệu ảnh đã đọc
+
+			 
+
+				$('#imgdata0').val('');
+				$('#imgdata0').val(imageData);
+			}
+			reader.readAsDataURL(file);
+			$('#frame_image0').val('');
+			$('#frame_image0').val(file.name);
+			  // Hiển thị thông tin về tệp tin đã chọn (ví dụ)
+			  console.log("File Name: " + file.name);
+			  console.log("File Size: " + file.size + " bytes");
+			});
+	}
+	var fileInput1 = document.getElementById('file-input1');
+	if(fileInput1 != null){
+		fileInput1.addEventListener("change", function(event) {
+			var file = event.target.files[0]; // Lấy tệp tin từ sự kiện onchange
+
+			var reader = new FileReader();
+
+			// Xử lý khi đọc tệp tin hoàn tất
+			reader.onload = function(e) {
+				var imageData = e.target.result; // Dữ liệu ảnh đã đọc
+
+			 
+
+				$('#imgdata1').val('');
+				$('#imgdata1').val(imageData);
+			}
+			reader.readAsDataURL(file);
+			$('#frame_image1').val('');
+			$('#frame_image1').val(file.name);
+			  // Hiển thị thông tin về tệp tin đã chọn (ví dụ)
+			  console.log("File Name: " + file.name);
+			  console.log("File Size: " + file.size + " bytes");
+			});
+	}
+	var fileInput2 = document.getElementById('file-input2');
+	if(fileInput2 != null){
+		fileInput2.addEventListener("change", function(event) {
+			var file = event.target.files[0]; // Lấy tệp tin từ sự kiện onchange
+
+			var reader = new FileReader();
+
+			// Xử lý khi đọc tệp tin hoàn tất
+			reader.onload = function(e) {
+				var imageData = e.target.result; // Dữ liệu ảnh đã đọc
+
+			 
+
+				$('#imgdata2').val('');
+				$('#imgdata2').val(imageData);
+			}
+			reader.readAsDataURL(file);
+			$('#frame_image2').val('');
+			$('#frame_image2').val(file.name);
+			  // Hiển thị thông tin về tệp tin đã chọn (ví dụ)
+			  console.log("File Name: " + file.name);
+			  console.log("File Size: " + file.size + " bytes");
+			});
+	}
 });

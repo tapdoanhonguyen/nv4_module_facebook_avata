@@ -46,10 +46,21 @@ if ($nv_Request->isset_request('delete_fid', 'get') and $nv_Request->isset_reque
 
 $row = array();
 $error = array();
-if(defined('NV_IS_USER')){
+
+	if(defined('NV_IS_USER')){
         $row['userid'] = $user_info['userid'];
-    }else{
-        $row['userid'] = 0;
+    }elseif(!empty($array_op[0])){
+		$user_q=$db->query('SELECT userid FROM ' . NV_USERS_GLOBALTABLE . ' WHERE username = ' . $db->quote($array_op[0]));
+		$user_f=$user_q->fetch();
+		if(!empty($user_f)){
+			$row['userid'] = $user_f['userid'];
+			
+		}else{
+			$row['userid'] = 1;
+		}
+		
+	}else{
+        $row['userid'] = 1;
     }
 $q = $nv_Request->get_title('q', 'post,get');
 
@@ -64,9 +75,15 @@ if (!$nv_Request->isset_request('id', 'post,get')) {
         ->from('' . NV_PREFIXLANG . '_' . $module_data . '_frame');
 
     if (!empty($q)) {
-        $db->where('userid LIKE :q_userid OR title LIKE :q_title OR frame_image LIKE :q_frame_image');
-    }else{
-		$db->where('userid LIKE :q_userid');
+		if(!empty($array_op[0])){
+			$db->where('(userid LIKE :q_userid OR title LIKE :q_title OR frame_image LIKE :q_frame_image) AND status = 1');
+		}else{
+			$db->where('(userid LIKE :q_userid OR title LIKE :q_title OR frame_image LIKE :q_frame_image) AND status = 1');
+		}
+    }elseif(!empty($array_op[0])){
+		$db->where('userid LIKE :q_userid AND status = 1');
+	}else{
+		$db->where('userid LIKE :q_userid AND status = 1');
 	}
     $sth = $db->prepare($db->sql());
 
@@ -93,6 +110,7 @@ if (!$nv_Request->isset_request('id', 'post,get')) {
     }else{
 		$sth->bindValue(':q_userid', '%' . $row['userid'] . '%');
 	}
+	
     $sth->execute();
 }
 
@@ -108,6 +126,7 @@ $xtpl->assign('MODULE_UPLOAD', $module_upload);
 $xtpl->assign('NV_ASSETS_DIR', NV_ASSETS_DIR);
 $xtpl->assign('TEMPLATE', $module_info['template']);
 $xtpl->assign('USERID', $user_info['userid']);
+$xtpl->assign('USER_LINK', $user_info['username']);
 $xtpl->assign('OP', $op);
 $xtpl->assign('ROW', $row);
 
@@ -124,29 +143,40 @@ if ($show_view) {
         $xtpl->parse('main.view.generate_page');
     }
     $number = 0;
-    while ($view = $sth->fetch()) {
-		$view['frame'] = $view['frame_image'];
-		if($view['userid'] > 0){
-			if (!empty($view['frame_image']) and is_file(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/frame/' . $view['userid'] . '/' . $view['frame_image'])) {
-				
-				$view['frame_image'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/frame/' . $view['userid'] . '/' . $view['frame_image'];
+	if(!empty($sth)){
+		while ($view = $sth->fetch()) {
+			$view['frame'] = $view['frame_image'];
+			if($view['userid'] > 0){
+				if (!empty($view['frame_image']) and is_file(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/frame/' . $view['userid'] . '/' . $view['frame_image'])) {
+					
+					$view['frame_image'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/frame/' . $view['userid'] . '/' . $view['frame_image'];
+				}
+			}else{
+				if (!empty($view['frame_image']) and is_file(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $view['frame_image'])) {
+					$view['frame_image'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $view['frame_image'];
+				}
 			}
-		}else{
-			if (!empty($view['frame_image']) and is_file(NV_UPLOADS_REAL_DIR . '/' . $module_upload . '/' . $view['frame_image'])) {
-				$view['frame_image'] = NV_BASE_SITEURL . NV_UPLOADS_DIR . '/' . $module_upload . '/' . $view['frame_image'];
+			if($number == 0) {
+				$view['active'] = 'factive';
 			}
+			$xtpl->assign('IMAGEPERSON', NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/person.png');
+			$view['number'] = $number++;
+			$xtpl->assign('CHECK', $view['status'] == 1 ? 'checked' : '');
+			$view['link_edit'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op . '&amp;fid=' . $view['fid'];
+			$view['link_delete'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op . '&amp;delete_fid=' . $view['fid'] . '&amp;delete_checkss=' . md5($view['fid'] . NV_CACHE_PREFIX . $client_info['session_id']);
+			$xtpl->assign('VIEW', $view);
+			
+			$xtpl->parse('main.view.loop');
+			
 		}
-		if($number == 0) {
-			$view['active'] = 'factive';
-		}
-		$xtpl->assign('IMAGEPERSON', NV_BASE_SITEURL . 'themes/' . $module_info['template'] . '/images/' . $module_file . '/person.png');
-        $view['number'] = $number++;
-        $xtpl->assign('CHECK', $view['status'] == 1 ? 'checked' : '');
-        $view['link_edit'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op . '&amp;fid=' . $view['fid'];
-        $view['link_delete'] = NV_BASE_SITEURL . 'index.php?' . NV_LANG_VARIABLE . '=' . NV_LANG_DATA . '&amp;' . NV_NAME_VARIABLE . '=' . $module_name . '&amp;' . NV_OP_VARIABLE . '=' . $op . '&amp;delete_fid=' . $view['fid'] . '&amp;delete_checkss=' . md5($view['fid'] . NV_CACHE_PREFIX . $client_info['session_id']);
-        $xtpl->assign('VIEW', $view);
-        $xtpl->parse('main.view.loop');
-    }
+	}else{
+		
+		$xtpl->parse('main.view.guest');
+	}
+	if(defined('NV_IS_USER')){
+		$xtpl->parse('main.share');
+	}
+	
     $xtpl->parse('main.view');
 }
 

@@ -13,6 +13,13 @@
 
 
                 <!-- END: loop -->
+				<!-- BEGIN: guest -->
+					<img class="design " src="{GUEST.frame_image_0}" data-design="{GUEST.frame_0}" data-userid="{USERID}"/>
+					<img class="design " src="{GUEST.frame_image_1}" data-design="{VIEW.frame_1}" data-userid="{USERID}"/>
+					<img class="design " src="{GUEST.frame_image_2}" data-design="{GUEST.frame_2}" data-userid="{USERID}"/>
+
+
+                <!-- END: guest -->
 
 <!-- END: view -->
         </div>
@@ -37,6 +44,12 @@
             Lưu avata từ Facebook/Zalo và Chọn ảnh để chèn vào khung hình<input type="file" name="file" onchange="onFileChange(this)">
 </div>
         </div> 
+		
+		 <div>   
+            <!-- BEGIN: share -->
+            Share link : <a href="{NV_MY_DOMAIN}{NV_BASE_SITEURL}{MODULE_NAME}/{USER_LINK}"  >{NV_MY_DOMAIN}{NV_BASE_SITEURL}{MODULE_NAME}/{USER_LINK} </a>
+			<!-- END: share -->
+</div>
 
 </div> 
 </div> 

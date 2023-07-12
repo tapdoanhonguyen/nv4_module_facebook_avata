@@ -45,3 +45,6 @@ $lang_module['file'] = 'file';
 
 //Lang for function main
 $lang_module['userid'] = 'Userid';
+
+//Lang for function config
+$lang_module['config'] = 'config';
